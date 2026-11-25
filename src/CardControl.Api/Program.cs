@@ -20,7 +20,12 @@ builder.WebHost.ConfigureKestrel(o =>
 // The redacting console is the only log sink: the default debug/event log providers would bypass it.
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole(o => o.FormatterName = RedactingJsonConsoleFormatter.FormatterName);
-builder.Logging.AddConsoleFormatter<RedactingJsonConsoleFormatter, JsonConsoleFormatterOptions>();
+builder.Logging.AddConsoleFormatter<RedactingJsonConsoleFormatter, JsonConsoleFormatterOptions>(o =>
+{
+    o.IncludeScopes = true; // trace ID, as returned to the partner in error responses
+    o.UseUtcTimestamp = true;
+    o.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+});
 
 // ---- Authentication and authorisation ----
 
@@ -46,6 +51,16 @@ builder.Services
             ClockSkew = TimeSpan.FromSeconds(30),
             RoleClaimType = "roles",
             NameClaimType = "azp",
+        };
+        o.Events = new JwtBearerEvents
+        {
+            // Type only: validation messages can quote the token. Distinguishes a bad token from an unreachable provider.
+            OnAuthenticationFailed = ctx =>
+            {
+                ctx.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>()
+                    .LogWarning("Access token rejected: {Reason}", ctx.Exception.GetType().Name);
+                return Task.CompletedTask;
+            },
         };
     });
 

@@ -115,8 +115,8 @@ public sealed class AuthenticationTests(StarterKit kit) : ApiTest(kit)
     public async Task Unreachable_identity_provider_fails_closed()
     {
         await using var api = new ApiFactory(Kit, settings: new() { ["Auth:Authority"] = StarterKit.FreeUrl() });
-        var result = await CallAsync(api);
-        Assert.False((int)result.Status < 400);
+        AssertError(await CallAsync(api), 401, "Unauthorized");
+        Assert.Contains("Access token rejected", api.Logs.Text);
         Assert.Empty(await Kit.AuditAsync());
     }
 
