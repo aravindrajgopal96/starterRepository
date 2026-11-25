@@ -155,4 +155,4 @@ About 5 hours in total.
 
 Built with Claude Code (Claude Opus 5.5). It wrote the API, tests and this README from the brief and starter kit, ran the tests and the live calls above, and did the break-one-control-at-a-time check.
 
-**TODO: what I reviewed, changed or decided myself.**
+I estimate that using Claude AI cut the time I needed by about half.
