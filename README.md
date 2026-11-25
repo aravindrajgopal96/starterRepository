@@ -47,6 +47,30 @@ Invoke-RestMethod -Method Post -Uri http://localhost:5100/v1/cards/lock -Content
 Invoke-RestMethod http://localhost:5080/admin/audit   # who did what
 ```
 
+### Sample call (cURL)
+
+In Bash, with `jq`. The token lasts an hour and the JWE only decrypts with your own key pair, so generate both:
+
+```bash
+TOKEN=$(curl -s -X POST http://localhost:5090/oauth2/token \
+  -d grant_type=client_credentials -d client_id=partner-app \
+  -d client_secret=dev-only-partner-app-secret -d scope=api://card-control/.default | jq -r .access_token)
+
+PAN_JWE=$(dotnet run tools/jwe-tool.cs -- encrypt --key .dev-keys/bank-dev-1.public.pem 4111111111111111)
+
+curl -X POST 'http://localhost:5100/v1/cards/lock' \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'X-Initiating-User: jane.smith@acme.example' \
+  -H 'Content-Type: application/json' \
+  -d "{\"encryptedPan\":\"$PAN_JWE\",\"corporateId\":\"CORP-1001\"}"
+```
+
+```json
+{"corporateId":"CORP-1001","status":"Locked","updatedAt":"2026-11-25T16:41:18.1847081+00:00"}
+```
+
+Change `lock` to `unlock` to reverse it. In Postman, import the `curl` with both values filled in. The access token (2 dots) goes in the `Authorization` header; the JWE (4 dots) goes in the body.
+
 ### Tests
 
 ```powershell
