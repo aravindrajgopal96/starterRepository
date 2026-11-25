@@ -3,3 +3,9 @@ obj/
 *.user
 .vs/
 .idea/
+
+# Private key material: never commit
+.dev-keys/
+*.pem
+*.pfx
+TestResults/
