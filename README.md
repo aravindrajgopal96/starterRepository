@@ -149,7 +149,7 @@ The PAN is in the body because URLs end up in access logs. Errors are RFC 9457 P
 
 ## Time spent
 
-**TODO: total time.**
+About 5 hours in total.
 
 ## Use of AI
 
