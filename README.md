@@ -151,10 +151,9 @@ The PAN is in the body because URLs end up in access logs. Errors are RFC 9457 P
 
 ## Time spent
 
-About 5 hours in total, including reading the brief, setting up and running the starter kit, testing by hand and reviewing the code.
+About 4-5 hours in total, including reading the brief, setting up and running the starter kit, testing by hand and reviewing the code.
 
 ## Use of AI
 
 Built with Claude Code (Claude Opus 5.5). It wrote the API, tests and this README from the brief and starter kit, ran the tests and the live calls above, and did the break-one-control-at-a-time check.
 
-I estimate that using Claude AI cut the time I needed by about half.
