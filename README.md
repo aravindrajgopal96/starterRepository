@@ -1,5 +1,7 @@
 # Card Control API
 
+Git repository - https://github.com/aravindrajgopal96/starterRepository
+
 Lets a partner lock and unlock corporate cards. C# / .NET 10.
 
 | Path | What |
@@ -149,7 +151,7 @@ The PAN is in the body because URLs end up in access logs. Errors are RFC 9457 P
 
 ## Time spent
 
-About 5 hours in total.
+About 5 hours in total, including reading the brief, setting up and running the starter kit, testing by hand and reviewing the code.
 
 ## Use of AI
 
